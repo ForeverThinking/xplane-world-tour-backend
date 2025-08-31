@@ -28,11 +28,15 @@ func createTables() {
 	CREATE TABLE IF NOT EXISTS flights (
 	flight_id INTEGER PRIMARY KEY AUTOINCREMENT,
 	start_icao TEXT NOT NULL,
-	end_icao TEXT NOT NULL
+	end_icao TEXT NOT NULL,
+	aircraft_make TEXT NOT NULL,
+	aircraft_model TEXT NOT NULL,
+	elapsed_hours INTEGER NOT NULL,
+	elapsed_minutes INTEGER NOT NULL
 	)
 	`
 
-	 if _, err := DB.Exec(createFlightsTable); err != nil {
+	if _, err := DB.Exec(createFlightsTable); err != nil {
 		panic("Cannot create flights table.")
-	 }
+	}
 }
