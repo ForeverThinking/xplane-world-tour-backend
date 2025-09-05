@@ -37,3 +37,18 @@ func (f *Flight) Save() error {
 
 	return err
 }
+
+func GetFlightById(id int64) (*Flight, error) {
+	query := `SELECT * FROM flights WHERE flight_id = ?`
+
+	result := db.DB.QueryRow(query, id)
+
+	var flight Flight
+	if err := result.Scan(
+		&flight.ID, &flight.StartIcao, &flight.EndIcao, &flight.AircraftMake, &flight.AircraftModel,
+		 &flight.ElapsedHours, &flight.ElapsedMinutes); err != nil {
+		return nil, err
+	}
+
+	return &flight, nil
+}
