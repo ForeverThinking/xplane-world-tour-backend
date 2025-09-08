@@ -6,4 +6,5 @@ func RegisterRoutes(server *gin.Engine) {
 	server.POST("/flights", createFlight)
 	server.GET("flights", getAllFlights)
 	server.GET("/flights/:id", getFlightById)
+	server.PUT("/flights/:id", updateFlightById)
 }

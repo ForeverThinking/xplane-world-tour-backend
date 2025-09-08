@@ -76,3 +76,20 @@ func GetAllFlights() ([]Flight, error) {
 
 	return flights, nil
 }
+
+func (f Flight) UpdateFlight() error {
+	query := `
+	UPDATE flights
+	SET start_icao = ?, end_icao = ?, aircraft_make = ?, aircraft_model = ?, elapsed_hours = ?, elapsed_minutes = ?
+	WHERE flight_id = ?
+	`
+
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(f.StartIcao, f.EndIcao, f.AircraftMake, f.AircraftModel, f.ElapsedHours, f.ElapsedMinutes, f.ID)
+	return err
+}
