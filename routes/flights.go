@@ -24,8 +24,19 @@ func createFlight(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"message": "Flight created.", "flight": flight})
 }
 
+func getAllFlights(context *gin.Context) {
+	flights, err := models.GetAllFlights()
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not get flights."})
+		return
+	}
+
+	context.JSON(http.StatusOK, flights)
+}
+
 func getFlightById(context *gin.Context) {
-	flightId, err := strconv.ParseInt(context.Param("id"), 10,64)
+	flightId, err := strconv.ParseInt(context.Param("id"), 10, 64)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse input."})
