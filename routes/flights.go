@@ -82,3 +82,28 @@ func updateFlightById(context *gin.Context) {
 
 	context.JSON(http.StatusOK, gin.H{"message": "Flight updated successfully!"})
 }
+
+func deleteFlight(context *gin.Context) {
+	flightId, err := strconv.ParseInt(context.Param("id"), 10, 64)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Invalid flight ID."})
+		return
+	}
+
+	flight, err := models.GetFlightById(flightId)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not find flight."})
+		return
+	}
+
+	err = flight.DeleteFlight()
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not delete flight."})
+		return
+	}
+
+	context.JSON(http.StatusNoContent, gin.H{"message": "Flight successfully deleted!"})
+}
