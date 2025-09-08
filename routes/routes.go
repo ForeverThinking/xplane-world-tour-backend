@@ -7,4 +7,5 @@ func RegisterRoutes(server *gin.Engine) {
 	server.GET("flights", getAllFlights)
 	server.GET("/flights/:id", getFlightById)
 	server.PUT("/flights/:id", updateFlightById)
+	server.DELETE("/flights/:id", deleteFlight)
 }

@@ -1,6 +1,8 @@
 package models
 
-import "github.com/ForeverThinking/xplane-world-tour-backend/db"
+import (
+	"github.com/ForeverThinking/xplane-world-tour-backend/db"
+)
 
 type Flight struct {
 	ID             int64
@@ -91,5 +93,21 @@ func (f Flight) UpdateFlight() error {
 	}
 
 	_, err = stmt.Exec(f.StartIcao, f.EndIcao, f.AircraftMake, f.AircraftModel, f.ElapsedHours, f.ElapsedMinutes, f.ID)
+	return err
+}
+
+func (f Flight) DeleteFlight() error {
+	query := "DELETE FROM flights WHERE flight_id = ?"
+
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(f.ID)
+
 	return err
 }
