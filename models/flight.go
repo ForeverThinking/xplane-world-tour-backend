@@ -46,9 +46,33 @@ func GetFlightById(id int64) (*Flight, error) {
 	var flight Flight
 	if err := result.Scan(
 		&flight.ID, &flight.StartIcao, &flight.EndIcao, &flight.AircraftMake, &flight.AircraftModel,
-		 &flight.ElapsedHours, &flight.ElapsedMinutes); err != nil {
+		&flight.ElapsedHours, &flight.ElapsedMinutes); err != nil {
 		return nil, err
 	}
 
 	return &flight, nil
+}
+
+func GetAllFlights() ([]Flight, error) {
+	query := "SELECT * FROM flights"
+	rows, err := db.DB.Query(query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var flights []Flight
+	for rows.Next() {
+		var flight Flight
+		if err := rows.Scan(&flight.ID, &flight.StartIcao, &flight.EndIcao, &flight.AircraftMake,
+			&flight.AircraftModel, &flight.ElapsedHours, &flight.ElapsedMinutes); err != nil {
+			return nil, err
+		}
+
+		flights = append(flights, flight)
+	}
+
+	return flights, nil
 }
